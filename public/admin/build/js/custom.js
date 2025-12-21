@@ -2860,7 +2860,7 @@ function init_charts() {
         var ctx = document.getElementById("lineChart");
         var revenue = $("#lineChart").data("revenue-per-month");
         console.log(revenue);
-        
+
         var lineChart = new Chart(ctx, {
             type: "line",
             data: {
@@ -4962,34 +4962,34 @@ function init_echarts() {
 
     if ($("#echart_donut").length) {
         var echartDonut = echarts.init(document.getElementById("echart_donut"), theme);
-    
+
         var paymentData = $("#echart_donut").data("payment-method");
-    
+
         var paymentMethodNames = {
             "momo-payment": "Thanh toán bằng Momo",
             "paypal-payment": "Thanh toán bằng Paypal",
             "office-payment": "Thanh toán tại văn phòng",
         };
-    
+
         var paymentMethodColors = {
-            "momo-payment": "#FF0000",  
-            "paypal-payment": "#0000FF", 
+            "momo-payment": "#FF0000",
+            "paypal-payment": "#0000FF",
             "office-payment": "#FFA500",
         };
-    
+
         // Chuẩn bị dữ liệu cho biểu đồ ECharts
         var chartData = paymentData.map(function(item) {
             return {
-                value: item.count, 
-                name: paymentMethodNames[item.paymentMethod] || item.paymentMethod, 
+                value: item.count,
+                name: paymentMethodNames[item.paymentMethod] || item.paymentMethod,
                 itemStyle: {
                     color: paymentMethodColors[item.paymentMethod] || "#CCCCCC"
                 }
             };
         });
-    
+
         console.log(chartData);  // Kiểm tra dữ liệu chuẩn bị cho biểu đồ
-    
+
         // Thiết lập biểu đồ ECharts
         echartDonut.setOption({
             tooltip: {
@@ -5032,9 +5032,9 @@ function init_echarts() {
             series: [
                 {
                     name: "Payment Methods",
-                    type: "pie",  
-                    radius: ["35%", "55%"], 
-                    data: chartData,  
+                    type: "pie",
+                    radius: ["35%", "55%"],
+                    data: chartData,
                     color: paymentData.map(function(item) {
                         return paymentMethodColors[item.paymentMethod] || "#CCCCCC";
                     }),
@@ -5062,7 +5062,7 @@ function init_echarts() {
             ],
         });
     }
-    
+
 
     //echart Pie
 

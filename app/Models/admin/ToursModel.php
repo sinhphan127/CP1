@@ -19,6 +19,14 @@ class ToursModel extends Model
             ->get();
     }
 
+    public function getAllToursByGuid($guid)
+    {
+        return DB::table($this->table)
+            ->where('tourGuideId', $guid)
+            ->orderBy('tourId', 'DESC')
+            ->get();
+    }
+
     public function createTours($data)
     {
         return DB::table($this->table)->insertGetId($data);
@@ -43,6 +51,7 @@ class ToursModel extends Model
         $updated = DB::table($this->table)
         ->where('tourId',$tourId)
         ->update($data);
+
 
         return $updated;
     }

@@ -28,13 +28,63 @@
 </head>
 
 <body class="login">
+    <style>
+        body.login {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+        }
+
+        .login_wrapper {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            padding-top: 8%;
+        }
+
+        .login_form {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            padding: 35px 30px;
+        }
+
+        .login_content h1 {
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #2a5298;
+        }
+
+        .login_content input.form-control {
+            height: 45px;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+
+        .login_content .submit {
+            width: 100%;
+            background: #2a5298;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .login_content .submit:hover {
+            background: #1e3c72;
+        }
+    </style>
     <div>
 
         <div class="login_wrapper">
             <div class="animate form login_form">
                 <section class="login_content">
                     <form action="{{ route('admin.login-account') }}" method="POST" id="formLoginAdmin">
-                        <h1>Đăng nhập</h1>
+                        <h1>Admin Login</h1>
+                        <p style="color:#777;margin-bottom:25px;">
+                            Vui lòng đăng nhập để tiếp tục
+                        </p>
                         @csrf
                         <div>
                             <input type="text" class="form-control" name="username" id="username"

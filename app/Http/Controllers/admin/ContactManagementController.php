@@ -16,14 +16,16 @@ class ContactManagementController extends Controller
     {
         $this->contact = new ContactModel();
     }
-    public function index()
+    public function index(Request $request)
     {
         $title = 'Liên hệ';
 
         $contacts = $this->contact->getContacts();
         // dd($contacts);
 
-        return view('admin.contact', compact('title', 'contacts'));
+        $role = $request->role;
+
+        return view('admin.contact', compact('title', 'contacts', 'role'));
     }
 
     public function replyContact(Request $request)

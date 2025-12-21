@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\AdminManagementController;
 use App\Http\Controllers\admin\BookingManagementController;
 use App\Http\Controllers\admin\ContactManagementController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\DocumentController;
 use App\Http\Controllers\admin\LoginAdminController;
 use App\Http\Controllers\admin\ToursManagementController;
 use App\Http\Controllers\admin\UserManagementController;
@@ -96,7 +97,7 @@ Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/create-contact', [ContactController::class, 'createContact'])->name('create-contact');
 
 
-//Search 
+//Search
 Route::get('/search', [SearchController::class, 'index'])->name(name: 'search');
 Route::get('/search-voice-text', [SearchController::class, 'searchTours'])->name('search-voice-text');
 
@@ -107,14 +108,19 @@ Route::prefix('admin')->group(function () {
     Route::get('/login', [LoginAdminController::class, 'index'])->name('admin.login');
     Route::post('/login-account', [LoginAdminController::class, 'loginAdmin'])->name('admin.login-account');
     Route::get('/logout', [LoginAdminController::class, 'logout'])->name('admin.logout');
-
+    Route::get('/documents', [DocumentController::class, 'index'])->name('admin.documents');
+    Route::post('/documents/upload', [DocumentController::class, 'upload']) ->name('admin.documents.upload');
+    Route::get('/documents/download/{id}', [DocumentController::class, 'download']) ->name('admin.documents.download');
+    Route::delete('/documents/{id}', [DocumentController::class, 'delete']) ->name('admin.documents.delete');
 });
 
 Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-
     //Management admin
     Route::get('/admin', [AdminManagementController::class, 'index'])->name('admin.admin');
+    Route::get('/admin-users', [AdminManagementController::class, 'admins'])->name('admin.admin-users');
+    Route::post('/admin-addons', [AdminManagementController::class, 'addUserAdmin'])->name('admin.admin-addons');
+    Route::post('/admin/delete-user', [AdminManagementController::class, 'deleteUserAdmin'])->name('admin.delete-user');
     Route::post('/update-admin', [AdminManagementController::class, 'updateAdmin'])->name('admin.update-admin');
     Route::post('/update-avatar', [AdminManagementController::class, 'updateAvatar'])->name('admin.update-avatar');
 
@@ -143,6 +149,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/booking-detail/{id?}', [BookingManagementController::class, 'showDetail'])->name('admin.booking-detail');
     Route::post('/finish-booking', [BookingManagementController::class, 'finishBooking'])->name('admin.finish-booking');
     Route::post('/received-money', [BookingManagementController::class, 'receiviedMoney'])->name('admin.received');
+    Route::get('/booking-filter', [BookingManagementController::class, 'bookingFilter'])->name('admin.booking-filter');
 
     //Send mail pdf
     Route::post('/admin/send-pdf', [BookingManagementController::class, 'sendPdf'])->name('admin.send.pdf');

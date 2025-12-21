@@ -14,14 +14,75 @@ class AdminManagementController extends Controller
     {
         $this->admin = new AdminModel();
     }
-    public function index()
+    public function index(Request $request)
     {
-        $title = 'Quản lý Admin';
+        $title = 'Thông Tin Cá Nhân';
 
-        $admin = $this->admin->getAdmin();
+        $adminId = $request->session()->get('adminId');
+        $admin = $this->admin->getAdminById($adminId);
 
-        return view('admin.profile-admin', compact('title', 'admin'));
+        $role = $request->role;
+
+
+        return view('admin.profile-admin', compact('title', 'admin', 'role'));
     }
+
+
+    public function admins(Request $request)
+    {
+        $title = 'Quản lý admin';
+
+        $admins = $this-> admin->getAdmins();
+
+        return view('admin.user-admins', compact('title', 'admins'));
+
+    }
+
+    public function addUserAdmin(Request $request)
+    {
+        $userName = $request->input('username');
+        $fullName = $request->input('fullName');
+        $role = $request->input('role');
+        $email = $request->input('email');
+        $address = $request->input('address');
+        $passwd = $request->input('passwd');
+
+        $admin = [
+            'fullName' => $fullName,
+            'username' =>$userName,
+            'password' => md5($passwd),
+            'email' => $email,
+            'role' => $role,
+            'address' => $address,
+            'createdDate' => now(),
+            'adminId' => now()->getTimestamp(),
+        ];
+        $createAdmin = $this->admin->addAdminUser($admin);
+        return response()->json([
+            'success' => true,
+            'message'=> 'Add admin success',
+            'adminId' => $createAdmin,
+        ]);
+    }
+
+    public function deleteUserAdmin(Request $request)
+    {
+        $adminId = $request->input('adminId');
+        if ($adminId == null || $adminId == '') {
+            return response()->json([
+                'success' => false,
+                'message'=> 'Delete admin success fails',
+            ]);
+        }
+        $this->admin->deleteAdmin($adminId);
+        $admins = $this-> admin->getAdmins();
+        return response()->json([
+            'success' => true,
+            'message'=> 'Delete admin success',
+            'data' => view('admin.user-admins', compact('admins'))->render()
+        ]);
+    }
+
 
     public function updateAdmin(Request $request)
     {
@@ -30,13 +91,16 @@ class AdminManagementController extends Controller
         $email = $request->email;
         $address = $request->address;
 
+
+
+
         $admin = $this->admin->getAdmin();
         $oldPass = $admin->password;
 
         if ($password != $oldPass) {
             $password = md5($password);
         }
-        
+
 
         $dataUpdate = [
             'fullName' => $fullName,

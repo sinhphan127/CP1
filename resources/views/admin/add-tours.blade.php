@@ -145,7 +145,6 @@
                                                         id="end_date" name="end_date" required>
                                                 </div>
                                             </div>
-
                                             <div class="field item form-group bad">
                                                 <label class="col-form-label col-md-3 col-sm-3  label-align">Mô
                                                     tả<span>*</span></label>

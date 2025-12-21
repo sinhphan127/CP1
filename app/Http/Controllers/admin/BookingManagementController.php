@@ -17,7 +17,7 @@ class BookingManagementController extends Controller
     {
         $this->booking = new BookingModel();
     }
-    public function index()
+    public function index(Request $request)
     {
         $title = 'Quản lý đặt Tour';
 
@@ -25,8 +25,10 @@ class BookingManagementController extends Controller
         $list_booking = $this->updateHideBooking($list_booking);
 
         // dd($list_booking);
+        $role = $request->role;
 
-        return view('admin.booking', compact('title', 'list_booking'));
+
+        return view('admin.booking', compact('title', 'list_booking', 'role'));
     }
 
     public function confirmBooking(Request $request)
@@ -150,6 +152,16 @@ class BookingManagementController extends Controller
             ], 500);
         }
     }
+
+    public function bookingFilter(Request $request){
+        $from = $request->from;
+        $to   = $request->to;
+        $list_booking = $this->booking->bookingFilterByDate($from, $to);
+
+        return response()->json([
+            'success' => true,
+            'data' => $list_booking
+        ]);    }
 
     private function updateHideBooking($list_booking)
     {

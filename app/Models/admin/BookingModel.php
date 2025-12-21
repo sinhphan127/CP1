@@ -45,4 +45,17 @@ class BookingModel extends Model
         ->where('bookingId',$bookingId)
         ->update($data);
     }
+
+    public function bookingFilterByDate($from, $to)
+    {
+        $list_booking = DB::table($this->table)
+            ->join('tbl_tours', 'tbl_tours.tourId', '=', 'tbl_booking.tourId')
+            ->join('tbl_checkout', 'tbl_booking.bookingId', '=', 'tbl_checkout.bookingId')
+            -> whereBetween(
+                DB::raw('DATE(tbl_booking.bookingDate)'),
+                [$from, $to])
+            ->orderByDesc('tbl_booking.bookingDate')
+            ->get();
+        return $list_booking;
+    }
 }

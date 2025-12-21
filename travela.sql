@@ -27,6 +27,20 @@ SET time_zone = "+00:00";
 -- Cấu trúc bảng cho bảng `failed_jobs`
 --
 
+CREATE TABLE `tbl_documents` (
+ `id` BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+ `title` VARCHAR(255) NOT NULL,
+ `file_name` VARCHAR(255) NOT NULL,
+ `file_path` VARCHAR(255) NOT NULL,
+ `file_type` VARCHAR(50) DEFAULT NULL,
+ `file_size` INT DEFAULT NULL,
+ `created_at` TIMESTAMP NULL DEFAULT NULL,
+ `updated_at` TIMESTAMP NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+
+
 CREATE TABLE `failed_jobs` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `uuid` varchar(255) NOT NULL,
@@ -103,6 +117,7 @@ CREATE TABLE `tbl_admin` (
   `password` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `address` varchar(255) NOT NULL,
+  `role` varchar(255) NOT NULL,
   `createdDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -110,10 +125,16 @@ CREATE TABLE `tbl_admin` (
 -- Đang đổ dữ liệu cho bảng `tbl_admin`
 --
 
-INSERT INTO `tbl_admin` (`adminId`, `fullName`, `username`, `password`, `email`, `address`, `createdDate`) VALUES
-(1, 'Admin', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'anh.dev@gmail.com', 'Ngũ Hành Sơn, Đà Nẵng', '2025-01-10 16:13:29');
+INSERT INTO `tbl_admin` (`adminId`, `fullName`, `username`, `password`, `email`, `address`, `role`,`createdDate`) VALUES
+(1, 'Admin', 'admin', 'f5bb0c8de146c67b44babbf4e6584cc0', 'anh.dev@gmail.com', 'Ngũ Hành Sơn, Đà Nẵng','admin', '2025-01-10 16:13:29'),
+(2, 'Gui', 'gui', 'f5bb0c8de146c67b44babbf4e6584cc0', 'gui@traval.com', 'Ngũ Hành Sơn, Đà Nẵng','gui', '2025-01-10 16:13:29'),
+(3, 'Customer', 'customer', 'f5bb0c8de146c67b44babbf4e6584cc0', 'customer@traval.com', 'Ngũ Hành Sơn, Đà Nẵng','customer', '2025-01-10 16:13:29'),
+(4, 'Gui-2', 'gui-2', 'f5bb0c8de146c67b44babbf4e6584cc0', 'gui-2@traval.com', 'Ngũ Hành Sơn, Đà Nẵng','gui', '2025-01-10 16:13:29'),
+(5, 'Gui-3', 'gui-3', 'f5bb0c8de146c67b44babbf4e6584cc0', 'gui-3@traval.com', 'Ngũ Hành Sơn, Đà Nẵng','gui', '2025-01-10 16:13:29');
 
 -- --------------------------------------------------------
+
+
 
 --
 -- Cấu trúc bảng cho bảng `tbl_booking`
@@ -590,6 +611,7 @@ CREATE TABLE `tbl_tours` (
   `availability` tinyint(1) NOT NULL,
   `startDate` date NOT NULL,
   `endDate` date NOT NULL,
+  `tourGuideId` int(11),
   `reviews` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -934,6 +956,7 @@ ALTER TABLE `users`
 --
 ALTER TABLE `tbl_booking`
   ADD CONSTRAINT `fk_booking_tour` FOREIGN KEY (`tourId`) REFERENCES `tbl_tours` (`tourId`);
+
 
 --
 -- Các ràng buộc cho bảng `tbl_chat`

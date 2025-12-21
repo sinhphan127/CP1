@@ -15,11 +15,14 @@ class UserManagementController extends Controller
     {
         $this->users = new UserModel();
     }
-    public function index()
+    public function index(Request $request)
     {
         $title = 'Quản lý người dùng';
 
         $users = $this->users->getAllUsers();
+
+        $role = $request->role;
+
 
         foreach ($users as $user) {
             if (!$user->fullName) {
@@ -35,8 +38,9 @@ class UserManagementController extends Controller
         }
         // dd($users);
 
-        return view('admin.users', compact('title', 'users'));
+        return view('admin.users', compact('title', 'users', 'role'));
     }
+
 
     public function activeUser(Request $request)
     {

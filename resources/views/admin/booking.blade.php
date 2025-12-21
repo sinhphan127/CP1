@@ -35,6 +35,25 @@
                                                 Chào mừng bạn đến với trang quản lý tour đã đặt. Tại đây, bạn có thể xác nhận,
                                                 xem chi tiết, và quản lý tất cả các tour đã được đặt hiện có.
                                             </p>
+                                            <div class="row" style="margin-bottom: 15px;">
+                                                <div class="col-md-3">
+                                                    <label>Từ ngày</label>
+                                                    <input type="date" id="filter-from" class="form-control">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label>Đến ngày</label>
+                                                    <input type="date" id="filter-to" class="form-control">
+                                                </div>
+                                                <div class="col-md-3" style="margin-top: 25px;">
+                                                    <button id="btn-filter-booking"  class="btn btn-success" data-url = "{{ route('admin.booking-filter') }}">
+                                                        <i class="fa fa-filter"></i> Lọc
+                                                    </button>
+                                                    <button id="btn-reset-booking" class="btn btn-default">
+                                                        Reset
+                                                    </button>
+                                                </div>
+                                            </div>
+
                                             <table id="datatable-booking" class="table table-striped table-bordered"
                                                 style="width:100%">
                                                 <thead>

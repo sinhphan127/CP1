@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\admin\AdminModel;
 use App\Models\admin\ToursModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -12,16 +13,23 @@ class ToursManagementController extends Controller
 {
     private $tours;
 
+    private $admin;
+
     public function __construct()
     {
         $this->tours = new ToursModel();
+        $this->admin = new AdminModel();
     }
     public function index()
     {
         $title = 'Quản lý Tours';
 
+        $tourGuid = $this->admin->getAdminByRole('gui');
+
         $tours = $this->tours->getAllTours();
-        return view('admin.tours', compact('title', 'tours'));
+
+
+        return view('admin.tours', compact('title', 'tours', 'tourGuid'));
     }
 
     public function pageAddTours()
@@ -275,6 +283,7 @@ class ToursManagementController extends Controller
         $price_adult = $request->input('price_adult');
         $price_child = $request->input('price_child');
         $description = $request->input('description');
+        $tourGuiId = $request->input('tourGuiId');
 
         $dataTours = [
             'title'       => $name,
@@ -284,6 +293,7 @@ class ToursManagementController extends Controller
             'priceChild'  => $price_child,
             'destination' => $destination,
             'domain'      => $domain,
+            'tourGuideId' => $tourGuiId,
         ];
 
         $delete_timeline = $this->tours->deleteData($tourId, 'tbl_timeline');
@@ -293,13 +303,13 @@ class ToursManagementController extends Controller
 
         // Tạo mảng tạm để lưu tên ảnh
         $images = $request->input('images');  // Mảng các tên ảnh gửi lên từ request
-
+        echo $request;
         if ($images && is_array($images)) {
             foreach ($images as $image) {
                 $dataUpload = [
                     'tourId' => $tourId,
-                    'imageURL' => $image, 
-                    'description' => $name  
+                    'imageURL' => $image,
+                    'description' => $name
                 ];
                 $this->tours->uploadImages($dataUpload);
             }

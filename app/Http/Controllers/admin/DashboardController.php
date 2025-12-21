@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\admin\DashboardModel;
+use App\Models\admin\ToursModel;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -11,14 +12,16 @@ class DashboardController extends Controller
 
     private $dashboard;
 
+    private $tours;
+
     public function __construct()
     {
         $this->dashboard = new DashboardModel();
+        $this->tours = new ToursModel();
     }
-    public function index()
+    public function index(Request $request)
     {
-        $title = 'Admin';
-
+        $title = 'ADMIN';
         $summary = $this->dashboard->getSummary();
         $valueTour = $this->dashboard->getValueDomain();
         $dataDomain = [
@@ -36,8 +39,16 @@ class DashboardController extends Controller
         $revenue = $this->dashboard->getRevenuePerMonth();
         // dd($revenue);
 
-        return view('admin.dashboard', compact('title', 'summary', 'dataDomain', 'paymentStatus','toursBooked','newBooking','revenue'));
+        $role = $request->role;
+
+        $adminId = $request -> session()->get('adminId');
+        $tours = $this->tours->getAllToursByGuid($adminId);
+
+
+
+        return view('admin.dashboard', compact('title', 'summary', 'dataDomain', 'paymentStatus','toursBooked','newBooking','revenue', 'role', 'tours'));
     }
+
 
 
 }

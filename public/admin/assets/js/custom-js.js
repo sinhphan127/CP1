@@ -1,4 +1,12 @@
 $(document).ready(function () {
+    function formatDate(dateStr) {
+        const d = new Date(dateStr);
+        return d.toLocaleDateString("vi-VN");
+    }
+
+    function formatMoney(amount) {
+        return new Intl.NumberFormat("vi-VN").format(amount);
+    }
     /********************************************
      * USER MANAGEMENT                          *
      ********************************************/
@@ -209,8 +217,7 @@ $(document).ready(function () {
 
         // Kiểm tra formDataImages đã chứa đủ ảnh chưa (ít nhất 5 ảnh)
         if (formDataImages.length < 5) {
-            toastr.error("Vui lòng tải lên ít nhất 5 ảnh.");
-            return false; // Dừng lại nếu số lượng ảnh không đủ
+            return true; // Dừng lại nếu số lượng ảnh không đủ
         }
 
         return formDataImages;
@@ -284,6 +291,7 @@ $(document).ready(function () {
                         price_child: $("input[name='price_child']").val(),
                         start_date: $("#start_date").val(),
                         end_date: $("#end_date").val(),
+                        tourGuiId:$("#tourGuiId").val(),
                         description: description,
                         _token: $('input[name="_token"]').val(),
                         images: [],
@@ -377,12 +385,12 @@ $(document).ready(function () {
         const timelineEntry = `
         <div class="timeline-entry" id="timeline-entry-${timelineCounter_edit}">
             <label for="day-${timelineCounter_edit}">Ngày ${timelineCounter_edit}</label>
-            <input type="text" class="form-control" id="day-${timelineCounter_edit}" 
-                   name="day-${timelineCounter_edit}" 
-                   placeholder="Ngày thứ..." 
-                   value="${title}" 
+            <input type="text" class="form-control" id="day-${timelineCounter_edit}"
+                   name="day-${timelineCounter_edit}"
+                   placeholder="Ngày thứ..."
+                   value="${title}"
                    required>
-            
+
             <label for="itinerary-${timelineCounter_edit}" style="margin-top: 10px; display: block;">Lộ trình:</label>
             <textarea id="itinerary-${timelineCounter_edit}" name="itinerary-${timelineCounter_edit}" required>${description}</textarea>
         </div>
@@ -399,6 +407,48 @@ $(document).ready(function () {
 
         timelineCounter_edit++;
     }
+
+
+    $("#add-user-admin").on("show.bs.modal", function () {
+        $("#btnAdd")
+            .off("click")
+            .on("click", function (e) {
+                e.preventDefault();
+
+                var urlUpdate = $(".form-info-add-admin").attr("action");
+
+                var payload = {
+                    username: $("input[name='userName']").val(),
+                    fullName: $("input[name='fullname']").val(),
+                    role: $("#role").val(),
+                    email: $("input[name='email']").val(),
+                    address: $("input[name='address']").val(),
+                    passwd: $("input[name='passwd']").val(),
+                    _token: $('meta[name="csrf-token"]').attr("content")
+                };
+
+                console.log("Payload add admin:", payload);
+
+                $.ajax({
+                    url: urlUpdate,
+                    type: "POST",
+                    data: payload,
+                    success: function (response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            $("#add-user-admin").modal("hide");
+                            location.reload();
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function () {
+                        toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
+                    }
+                });
+            });
+    });
+
 
     $("#edit-tour-modal").on("shown.bs.modal", function () {
         $("#edit-tour-modal #wizard .buttonFinish")
@@ -457,6 +507,7 @@ $(document).ready(function () {
         }
     });
 
+
     $(document).on("click", ".delete-tour", function (e) {
         e.preventDefault();
         var tourId = $(this).data("tourid");
@@ -474,6 +525,36 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
                     $("#tbody-listTours").html(response.data);
+                    toastr.success(response.message);
+                } else {
+                    toastr.error(response.message);
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
+            },
+        });
+    });
+
+
+
+    $(document).on("click", ".delete-user-admin", function (e) {
+        e.preventDefault();
+        var adminId = $(this).data("adminid");
+        var urlDelete = $(this).attr("href");
+
+        var csrfToken = $('meta[name="csrf-token"]').attr("content");
+        console.log( adminId);
+        $.ajax({
+            type: "POST",
+            url: urlDelete,
+            data: {
+                _token: csrfToken,
+                adminId: adminId,
+            },
+            success: function (response) {
+                if (response.success) {
+                    location.reload();
                     toastr.success(response.message);
                 } else {
                     toastr.error(response.message);
@@ -508,10 +589,10 @@ $(document).ready(function () {
                 <div class="timeline-entry" id="timeline-entry-${timelineCounter}">
                     <label for="day-${timelineCounter}">Ngày ${timelineCounter}</label>
                     <input type="text" class="form-control" id="day-${timelineCounter}" name="day-${timelineCounter}" placeholder="Ngày thứ..." required>
-                    
+
                     <label for="itinerary-${timelineCounter}" style="margin-top: 10px; display: block;">Lộ trình:</label>
                     <textarea id="itinerary-${timelineCounter}" name="itinerary-${timelineCounter}" required></textarea>
-                    
+
                     <button type="button" class="btn btn-round btn-danger remove-btn" data-id="${timelineCounter}">Xóa Timeline này</button>
                 </div>
             `;
@@ -628,10 +709,48 @@ $(document).ready(function () {
         });
     });
 
-    
+
     /********************************************
      * BOOKING INVOICE                          *
      ********************************************/
+    $("#btn-filter-booking").on("click", function () {
+        let from = $("#filter-from").val();
+        let to = $("#filter-to").val();
+        var url = $(this).data("url");
+
+        if (!from || !to) {
+            toastr.error("Vui lòng chọn đầy đủ ngày From và To");
+            return;
+        }
+
+        $.ajax({
+            url: url, // route filter
+            method: "GET",
+            data: {
+                from: from,
+                to: to
+            },
+            beforeSend: function () {
+                toastr.info("Đang lọc dữ liệu...");
+            },
+            success: function (response) {
+                renderBookingTable(response.data);
+                toastr.success("Lọc thành công");
+            },
+            error: function () {
+                toastr.error("Có lỗi xảy ra khi lọc booking");
+            }
+        });
+    });
+
+    /* Reset filter */
+    $("#btn-reset-booking").on("click", function () {
+        $("#filter-from").val("");
+        $("#filter-to").val("");
+        location.reload();
+    });
+
+
     $("#send-pdf-btn").click(function () {
         // Lấy bookingId và email từ button
         const bookingId = $(this).data("bookingid");
@@ -693,6 +812,108 @@ $(document).ready(function () {
         });
     });
 
+    function renderBookingTable(bookings) {
+        let html = "";
+
+        if (!bookings || bookings.length === 0) {
+            $("#tbody-booking").html(`
+            <tr>
+                <td colspan="13" class="text-center">Không có booking</td>
+            </tr>
+        `);
+            return;
+        }
+
+        bookings.forEach(function (booking) {
+
+            /* ===== Booking status ===== */
+            let bookingStatusHtml = "";
+            switch (booking.bookingStatus) {
+                case "c":
+                    bookingStatusHtml = `<span class="badge badge-danger">Đã hủy</span>`;
+                    break;
+                case "b":
+                    bookingStatusHtml = `<span class="badge badge-warning">Chưa xác nhận</span>`;
+                    break;
+                case "y":
+                    bookingStatusHtml = `<span class="badge badge-primary">Đã xác nhận</span>`;
+                    break;
+                case "f":
+                    bookingStatusHtml = `<span class="badge badge-success">Đã hoàn thành</span>`;
+                    break;
+            }
+
+            /* ===== Payment method ===== */
+            let paymentIcon = "";
+            if (booking.paymentMethod === "momo-payment") {
+                paymentIcon = `/admin/assets/images/icon/icon_momo.png`;
+            } else if (booking.paymentMethod === "paypal-payment") {
+                paymentIcon = `/admin/assets/images/icon/icon_paypal.png`;
+            } else {
+                paymentIcon = `/admin/assets/images/icon/icon_office.png`;
+            }
+
+            /* ===== Payment status ===== */
+            let paymentStatusHtml =
+                booking.paymentStatus === "n"
+                    ? `<span class="badge badge-danger">Chưa thanh toán</span>`
+                    : `<span class="badge badge-success">Đã thanh toán</span>`;
+
+            /* ===== Action buttons ===== */
+            let confirmBtn = "";
+            if (booking.bookingStatus === "b") {
+                confirmBtn = `
+                <a class="dropdown-item confirm-booking"
+                   href="javascript:void(0)"
+                   data-bookingid="${booking.bookingId}"
+                   data-urlconfirm="/admin/confirm-booking">
+                    Xác nhận
+                </a>`;
+            }
+
+            html += `
+            <tr>
+                <td>${booking.title}</td>
+                <td>${booking.fullName}</td>
+                <td>${booking.email}</td>
+                <td>${booking.phoneNumber}</td>
+                <td>${booking.address}</td>
+                <td>${formatDate(booking.bookingDate)}</td>
+                <td>${booking.numAdults}</td>
+                <td>${booking.numChildren}</td>
+                <td>${formatMoney(booking.totalPrice)}</td>
+                <td>${bookingStatusHtml}</td>
+                <td>
+                    <img src="${paymentIcon}" class="icon_payment" alt="">
+                </td>
+                <td>${paymentStatusHtml}</td>
+                <td>
+                    <div class="btn-group">
+                        <button type="button"
+                            class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+                            data-toggle="dropdown">
+                        </button>
+                        <div class="dropdown-menu">
+                            ${confirmBtn}
+                            <a class="dropdown-item finish-booking"
+                               href="javascript:void(0)"
+                               data-bookingid="${booking.bookingId}"
+                               data-urlfinish="/admin/finish-booking">
+                                Đã hoàn thành
+                            </a>
+                            <a class="dropdown-item"
+                               href="/admin/booking-detail/${booking.bookingId}">
+                                Xem chi tiết
+                            </a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        `;
+        });
+
+        $("#tbody-booking").html(html);
+    }
     /********************************************
      * CONTACT MANAGEMENT                       *
      ********************************************/
@@ -807,7 +1028,7 @@ $(document).ready(function () {
      ********************************************/
 
     $("#formProfileAdmin").on("submit", function (e) {
-        e.preventDefault(); 
+        e.preventDefault();
 
         var name = $("#fullName").val().trim();
         var password = $("#password").val().trim();
@@ -834,14 +1055,14 @@ $(document).ready(function () {
 
         if (isValid) {
             $.ajax({
-                url: $(this).attr('action'), 
+                url: $(this).attr('action'),
                 method: "POST",
                 data: {
                     fullName: name,
                     password: password,
                     email: email,
                     address: address,
-                    '_token': $('meta[name="csrf-token"]').attr('content') 
+                    '_token': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
                     if(response.success){
@@ -893,7 +1114,7 @@ $(document).ready(function () {
                 success: function (response) {
                     if (response.success) {
                         toastr.success(response.message);
-                        
+
                     } else {
                         toastr.error(response.message);
                     }
@@ -907,4 +1128,21 @@ $(document).ready(function () {
     /********************************************
      * DASHBOARD                                  *
      ********************************************/
+
+    $(".btn-delete-doc").on("click", function () {
+        let id = $(this).data("id");
+
+        if (!confirm("Xóa document này?")) return;
+
+        $.ajax({
+            url: `/admin/documents/${id}`,
+            type: "DELETE",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr("content")
+            },
+            success: function () {
+                location.reload();
+            }
+        });
+    });
 });

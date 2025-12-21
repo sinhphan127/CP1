@@ -22,12 +22,13 @@
                         <span class="count_top"><i class="fa fa-user"></i> Số người dùng đăng ký</span>
                         <div class="count green"><i class="fa fa-sort-asc"></i> 2,500</div>
                     </div>
-                    <div class="col-md-3 col-sm-4  tile_stats_count">
-                        <span class="count_top"><i class="fa fa-user"></i> Tổng doanh thu</span>
-                        <div class="count red">{{ number_format($summary['totalAmount'], 0, ',', '.') }} vnđ</div>
-                        <span class="sparkline_two" style="height: 160px;"><canvas width="196" height="40"
-                                style="display: inline-block; width: 196px; height: 40px; vertical-align: top;"></canvas></span>
-                    </div>
+                    @if(session('role') == 'admin')
+                        <div class="col-md-3 col-sm-4  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-user"></i> Tổng doanh thu</span>
+                            <div class="count red">{{ number_format($summary['totalAmount'], 0, ',', '.') }} vnđ</div>
+                            <span class="sparkline_two" style="height: 160px;"><canvas width="196" height="40" style="display: inline-block; width: 196px; height: 40px; vertical-align: top;"></canvas></span>
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -77,7 +78,7 @@
                                                 <td>
                                                     <p><i class="fa fa-square red"></i>Miền Bắc </p>
                                                 </td>
-                                                <td>{{ $dataDomain['values'][0] }}</td>
+                                                <td id="dataDomain">{{ $dataDomain['values'][0] }}</td>
                                             </tr>
                                             <tr>
                                                 <td>
@@ -98,153 +99,200 @@
                         </div>
                     </div>
                 </div>
+                @if(session('role') == 'admin' or session('role') == 'customer')
+                    <div class="col-md-6 col-sm-4  ">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Đặt tour</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                           aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                    </li>
+                                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
 
-                <div class="col-md-6 col-sm-4  ">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>Đặt tour</h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                        aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                </li>
-                                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                </li>
-                            </ul>
-                            <div class="clearfix"></div>
+                                <div id="echart_donut" data-payment-method='{{ json_encode($paymentStatus) }}'
+                                     style="height: 350px; -webkit-tap-highlight-color: transparent; user-select: none; position: relative; background-color: transparent;"
+                                     _echarts_instance_="ec_1733563825119">
+                                    <div
+                                        style="position: relative; overflow: hidden; width: 380px; height: 350px; cursor: default;">
+                                        <canvas width="380" height="350" data-zr-dom-id="zr_0"
+                                                style="position: absolute; left: 0px; top: 0px; width: 380px; height: 350px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                        <div class="x_content">
+                    </div></div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6  ">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Tours <small>được đặt nhiều nhất</small></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tên</th>
+                                            <th>Số chỗ đã đặt</th>
+                                            <th>Số chỗ còn trống</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($toursBooked as $item)
+                                            <tr>
+                                                <th scope="row">{{ $item->tourId }}</th>
+                                                <td>{{ $item->title }}</td>
+                                                <td>{{ $item->booked_quantity }}</td>
+                                                <td>{{ $item->quantity }}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
 
-                            <div id="echart_donut" data-payment-method='{{ json_encode($paymentStatus) }}'
-                                style="height: 350px; -webkit-tap-highlight-color: transparent; user-select: none; position: relative; background-color: transparent;"
-                                _echarts_instance_="ec_1733563825119">
-                                <div
-                                    style="position: relative; overflow: hidden; width: 380px; height: 350px; cursor: default;">
-                                    <canvas width="380" height="350" data-zr-dom-id="zr_0"
-                                        style="position: absolute; left: 0px; top: 0px; width: 380px; height: 350px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6  ">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Đơn đặt mới</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 col-sm-6  ">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>Tours <small>được đặt nhiều nhất</small></h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                </li>
-                            </ul>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Tên</th>
-                                        <th>Số chỗ đã đặt</th>
-                                        <th>Số chỗ còn trống</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($toursBooked as $item)
+                                    <table class="table table-bordered">
+                                        <thead>
                                         <tr>
-                                            <th scope="row">{{ $item->tourId }}</th>
-                                            <td>{{ $item->title }}</td>
-                                            <td>{{ $item->booked_quantity }}</td>
-                                            <td>{{ $item->quantity }}</td>
+                                            <th>ID</th>
+                                            <th>Họ và tên</th>
+                                            <th>Tên tours</th>
+                                            <th>Tổng tiền</th>
+                                            <th>Trạng thái</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($newBooking as $item)
+                                            <tr>
+                                                <th scope="row">
+                                                    <a href="{{ route('admin.booking-detail',['id' => $item->bookingId]) }}">{{ $item->bookingId }}</a>
+                                                </th>
+                                                <td>{{ $item->fullName }}</td>
+                                                <td>{{ $item->tour_name }}</td>
+                                                <td>{{ number_format($item->totalPrice, 0, ',', '.') }}</td>
+                                                <td>
+                                                    <span class="badge badge-warning">Chưa xác nhận</span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
 
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-6  ">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>Đơn đặt mới</h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                </li>
-                            </ul>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 ">
+
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Doanh thu theo tháng</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                               aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                        </li>
+                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <canvas id="lineChart" data-revenue-per-month = {{ json_encode($revenue)}}></canvas>
+                                </div>
+
+                            </div>
+
                             <div class="clearfix"></div>
                         </div>
-                        <div class="x_content">
 
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Họ và tên</th>
-                                        <th>Tên tours</th>
-                                        <th>Tổng tiền</th>
-                                        <th>Trạng thái</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($newBooking as $item)
-                                        <tr>
-                                            <th scope="row">
-                                                <a href="{{ route('admin.booking-detail',['id' => $item->bookingId]) }}">{{ $item->bookingId }}</a>
-                                            </th>
-                                            <td>{{ $item->fullName }}</td>
-                                            <td>{{ $item->tour_name }}</td>
-                                            <td>{{ number_format($item->totalPrice, 0, ',', '.') }}</td>
-                                            <td>
-                                                <span class="badge badge-warning">Chưa xác nhận</span>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                    </div>
+                @endif
 
+            @if(session('role') == 'gui')
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 ">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Tours</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="card-box table-responsive">
+                                            <table id="datatable-listTours" class="table table-striped table-bordered"
+                                                   style="width:100%">
+                                                <thead>
+                                                <tr>
+                                                    <th>Tên</th>
+                                                    <th>Thời gian</th>
+                                                    <th>Mô tả</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Giá người lớn</th>
+                                                    <th>Giá trẻ em</th>
+                                                    <th>Điểm đến</th>
+                                                    <th>Khả dụng</th>
+                                                    <th>Ngày bắt đầu</th>
+                                                    <th>Ngày kết thúc</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="tbody-listTours">
+                                                @include('admin.partials.list-tours')
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 col-sm-12 ">
 
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>Doanh thu theo tháng</h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                        aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                </li>
-                                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                </li>
-                            </ul>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-                            <canvas id="lineChart" data-revenue-per-month = {{ json_encode($revenue)}}></canvas>
-                        </div>
-
-                    </div>
-
-                    <div class="clearfix"></div>
-                </div>
-
-            </div>
+            @endif
         </div>
         <!-- /page content -->
     </div>
 </div>
-
 @include('admin.blocks.footer')

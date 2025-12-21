@@ -49,6 +49,7 @@
                                                         <th>Khả dụng</th>
                                                         <th>Ngày bắt đầu</th>
                                                         <th>Ngày kết thúc</th>
+                                                        <th>Tour guide</th>
                                                         <th>Sửa</th>
                                                         <th>Xóa</th>
                                                     </tr>
@@ -177,6 +178,17 @@
                                         <div class="col-md-6 col-sm-6">
                                             <input type="text" class="form-control datetimepicker" id="end_date"
                                                 name="end_date" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="field item form-group">
+                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Tour Guid<span>*</span></label>
+                                        <div class="col-md-6 col-sm-6">
+                                            <select class="form-control" name="tourGuiId" id="tourGuiId">
+                                                <option value="">Assigment Tour Gui</option>
+                                                @foreach ($tourGuid as $gui)
+                                                <option value="{{ $gui->adminId }}">{{ $gui->fullName }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
 

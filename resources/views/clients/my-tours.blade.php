@@ -38,7 +38,7 @@
             </div>
             <div class="col-lg-9">
                 @foreach ($myTours as $tour)
-                    <div class="destination-item style-three bgc-lighter" data-aos="fade-up" data-aos-duration="1500"
+                    <div class="destination-item style-three bgc-lighter" data-aoÏs="fade-up" data-aos-duration="1500"
                         data-aos-offset="50">
                         <div class="image">
                             @if ($tour->bookingStatus == 'b')
