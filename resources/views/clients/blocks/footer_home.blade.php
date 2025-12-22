@@ -1,6 +1,71 @@
 <!-- footer area start -->
 <footer class="main-footer bgs-cover overlay rel z-1 pb-25"
     style="background-image: url({{ asset('clients/assets/images/backgrounds/footer.jpg') }});">
+    <style>
+#chatbot-toggle {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #28a745;
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    cursor: pointer;
+    z-index: 9999;
+}
+
+#chatbot-box {
+    position: fixed;
+    bottom: 100px;
+    right: 25px;
+    width: 320px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    display: none;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+#chatbot-header {
+    background: #28a745;
+    color: #fff;
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 12px 12px 0 0;
+}
+
+#chatbot-messages {
+    padding: 10px;
+    height: 260px;
+    overflow-y: auto;
+    font-size: 14px;
+}
+
+#chatbot-input {
+    display: flex;
+    border-top: 1px solid #ddd;
+}
+
+#chatbot-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+}
+
+#chatbot-input button {
+    padding: 10px 15px;
+    background: #28a745;
+    color: #fff;
+    border: none;
+}
+</style>
     <div class="container">
         <div class="footer-top pt-100 pb-30">
             <div class="row justify-content-between">
@@ -131,6 +196,21 @@
                     src="{{ asset('clients/assets/images/icons/scroll-up.png') }}" alt="Scroll  Up"></button>
         </div>
     </div>
+    <!-- CHATBOT BUTTON -->
+<div id="chatbot-toggle">💬</div>
+
+<!-- CHATBOT BOX -->
+<div id="chatbot-box">
+    <div id="chatbot-header">🤖 Ecotour AI</div>
+
+    <div id="chatbot-messages"></div>
+
+    <div id="chatbot-input">
+        <input type="text" id="chatbot-text" placeholder="Bạn muốn hỏi gì về tour?" />
+        <button onclick="sendMessage()">Gửi</button>
+    </div>
+</div>
+
 </footer>
 <!-- footer area end -->
 
@@ -171,6 +251,8 @@
 
 {{-- paypal-payment  --}}
 <script src="https://www.paypal.com/sdk/js?client-id={{ env('PAYPAL_SANDBOX_CLIENT_ID') }}"></script>
+
+<script src="{{ asset('clients/assets/js/chat-gemini.js') }}"></script>
 <!-- Custom script by Dev dien-->
 <script src="{{ asset('clients/assets/js/custom-js.js') }}"></script>
 <script src="{{ asset('clients/assets/js/jquery.datetimepicker.full.min.js') }}"></script>
