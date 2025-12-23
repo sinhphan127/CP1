@@ -14,14 +14,23 @@
                     <div class="row">
                         <div class="col-lg-8 pe-lg-5 me-lg-5">
                             <div class="section-title mb-25">
-                                <h2>Kinh nghiệm và công ty du lịch chuyên nghiệp ở Việt Nam</h2>
+                                <h2 style="line-height:1.3;">
+                                    Công ty du lịch chuyên nghiệp <br>
+                                    <span style="color:#ff7a00;">Uy tín tại Việt Nam</span>
+                                </h2>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="experience-years rmb-20">
-                                <span class="title bgc-secondary">Năm kinh nghiệm</span>
-                                <span class="text">Chúng tôi có </span>
-                                <span class="years">5+</span>
+                                <span class="title bgc-secondary" style="padding:6px 14px;border-radius:20px;font-size:14px;letter-spacing:1px;">
+                                    Kinh nghiệm
+                                </span>
+                                <div style="margin-top:10px;">
+                                    <span class="years" style="font-size:42px;font-weight:700;line-height:1;color:#222;">5+</span>
+                                    <span class="text" style="display:block;margin-top:6px;font-size:15px;color:#666;">
+                                        Năm hoạt động trong lĩnh vực du lịch
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-8">
@@ -30,7 +39,7 @@
                                 nghiệp của chúng tôi sẽ đưa du khách qua
                                 những con phố sôi động, các địa danh lịch sử và những viên ngọc ẩn giấu của mỗi thành
                                 phố.</p>
-                            <ul class="list-style-two mt-35">
+                            <ul class="list-style-two mt-35" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
                                 <li>Cơ quan Trải nghiệm</li>
                                 <li>Đội ngũ Chuyên nghiệp</li>
                                 <li>Du lịch Chi phí Thấp</li>
@@ -145,7 +154,9 @@
             <div class="col-lg-12">
                 <div class="section-title text-center counter-text-wrap mb-50" data-aos="fade-up"
                     data-aos-duration="1500" data-aos-offset="50">
-                    <h2>Gặp gỡ những hướng dẫn viên du lịch giàu kinh nghiệm của chúng tôi</h2>
+                    <h2>
+                        Đội ngũ hướng dẫn viên <span style="color:#ff7a00;">giàu kinh nghiệm</span>
+                    </h2>
                     <p>Website <span class="count-text plus bgc-primary" data-speed="3000" data-stop="34500">0</span>
                         trải nghiệm phổ biến nhất mà bạn sẽ nhớ</p>
                 </div>
@@ -192,7 +203,7 @@
 
 
 <!-- Features Area start -->
-<section class="about-feature-two bgc-black pt-100 pb-45 rel z-1">
+<section class="about-feature-two bgc-black pt-100 pb-45 rel z-1" style="background:linear-gradient(135deg,#111,#000);">
     <div class="container">
         <div class="section-title text-center text-white counter-text-wrap mb-50" data-aos="fade-up"
             data-aos-duration="1500" data-aos-offset="50">

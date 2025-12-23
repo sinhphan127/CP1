@@ -10,9 +10,12 @@
                 <div class="contact-info-content mb-30 rmb-55" data-aos="fade-up" data-aos-duration="1500"
                     data-aos-offset="50">
                     <div class="section-title mb-30">
-                        <h2>Hãy nói chuyện với các hướng dẫn viên du lịch chuyên nghiệp của chúng tôi</h2>
+                        <h2 style="line-height:1.3;">
+                            Liên hệ với <span style="color:#ff7a00;">đội ngũ hướng dẫn viên</span><br>
+                            chuyên nghiệp của chúng tôi
+                        </h2>
                     </div>
-                    <p>Đội ngũ hỗ trợ tận tâm của chúng tôi luôn sẵn sàng hỗ trợ bạn giải đáp mọi thắc mắc hoặc vấn đề,
+                    <p style="color:#666;font-size:15px;line-height:1.7;">Đội ngũ hỗ trợ tận tâm của chúng tôi luôn sẵn sàng hỗ trợ bạn giải đáp mọi thắc mắc hoặc vấn đề,
                         cung cấp
                         các giải pháp nhanh chóng và được cá nhân hóa để đáp ứng nhu cầu của bạn.</p>
                     <div class="features-team-box mt-40">
@@ -33,9 +36,9 @@
             <div class="col-lg-8">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="contact-info-item" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50"
+                        <div class="contact-info-item" style="border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,0.06);padding:25px;transition:all .3s ease;background:#fff;" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50"
                             data-aos-delay="50">
-                            <div class="icon"><i class="fas fa-envelope"></i></div>
+                            <div class="icon" style="background:#ff7a00;color:#fff;border-radius:50%;width:55px;height:55px;display:flex;align-items:center;justify-content:center;font-size:20px;"><i class="fas fa-envelope"></i></div>
                             <div class="content">
                                 <h5>Cần trợ giúp và hỗ trợ</h5>
                                 <div class="text"><i class="far fa-envelope"></i> <a
@@ -44,9 +47,9 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="contact-info-item" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50"
+                        <div class="contact-info-item" style="border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,0.06);padding:25px;transition:all .3s ease;background:#fff;" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50"
                             data-aos-delay="100">
-                            <div class="icon"><i class="fas fa-phone"></i></div>
+                            <div class="icon" style="background:#ff7a00;color:#fff;border-radius:50%;width:55px;height:55px;display:flex;align-items:center;justify-content:center;font-size:20px;"><i class="fas fa-phone"></i></div>
                             <div class="content">
                                 <h5>Cần bất kỳ việc khẩn cấp nào</h5>
                                 <div class="text"><i class="far fa-phone"></i> <a href="callto:+0001234588">+000 (123)
@@ -55,9 +58,9 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="contact-info-item" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50"
+                        <div class="contact-info-item" style="border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,0.06);padding:25px;transition:all .3s ease;background:#fff;" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50"
                             data-aos-delay="50">
-                            <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="icon" style="background:#ff7a00;color:#fff;border-radius:50%;width:55px;height:55px;display:flex;align-items:center;justify-content:center;font-size:20px;"><i class="fas fa-map-marker-alt"></i></div>
                             <div class="content">
                                 <h5>Gia Lai</h5>
                                 <div class="text"><i class="fal fa-map-marker-alt"></i> Cửu An, An Khê, Gia Lai</div>
@@ -65,9 +68,9 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="contact-info-item" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50"
+                        <div class="contact-info-item" style="border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,0.06);padding:25px;transition:all .3s ease;background:#fff;" data-aos="fade-up" data-aos-duration="1500" data-aos-offset="50"
                             data-aos-delay="100">
-                            <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="icon" style="background:#ff7a00;color:#fff;border-radius:50%;width:55px;height:55px;display:flex;align-items:center;justify-content:center;font-size:20px;"><i class="fas fa-map-marker-alt"></i></div>
                             <div class="content">
                                 <h5>Kí túc xá Việt Hàn</h5>
                                 <div class="text"><i class="fal fa-map-marker-alt"></i> 120 Hoang Minh Thao, Hoa Khanh Nam, Da Nang</div>
@@ -87,7 +90,7 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-7">
-                <div class="comment-form bgc-lighter z-1 rel mb-30 rmb-55">
+                <div class="comment-form bgc-lighter z-1 rel mb-30 rmb-55" style="border-radius:16px;box-shadow:0 15px 40px rgba(0,0,0,0.08);">
                     <form id="contactForm" class="contactForm" name="contactForm" action="{{ route('create-contact') }}"
                         method="post" data-aos="fade-left" data-aos-duration="1500" data-aos-offset="50">
                         @csrf
@@ -125,7 +128,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group mb-0">
-                                    <button type="submit" class="theme-btn style-two">
+                                    <button type="submit" class="theme-btn style-two" style="border-radius:30px;padding:14px 34px;font-size:15px;">
                                         <span data-hover="Send Comments">Gửi</span>
                                         <i class="fal fa-arrow-right"></i>
                                     </button>
@@ -163,7 +166,7 @@
 
 
 <!-- Contact Map Start -->
-<div class="contact-map">
+<div class="contact-map" style="margin-top:40px;border-radius:18px;overflow:hidden;">
     <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d61349.64701146602!2d108.16542067386848!3d16.047164798501537!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314219c792252a13%3A0xfc14e3a044436487!2sDa%20Nang%2C%20H%E1%BA%A3i%20Ch%C3%A2u%20District%2C%20Da%20Nang%2C%20Vietnam!5e0!3m2!1sen!2s!4v1729087157388!5m2!1sen!2s"
         style="border:0; width: 100%;" allowfullscreen="" loading="lazy"
