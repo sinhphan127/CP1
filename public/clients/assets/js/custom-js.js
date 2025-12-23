@@ -36,7 +36,7 @@ $(document).ready(function () {
         }
 
         // Kiểm tra tên đăng nhập và mật khẩu không chứa ký tự đặc biệt (SQL injection)
-        
+
         if (sqlInjectionPattern.test(userName)) {
             isValid = false;
             $("#validate_username")
@@ -270,7 +270,7 @@ $(document).ready(function () {
         $('input[name="filter_star"]').prop("checked", false);
         $('input[name="duration"]').prop("checked", false);
 
-        
+
         var url = $(this).attr("href");
 
         $.ajax({
@@ -696,6 +696,10 @@ $(document).ready(function () {
         }
     });
 
+
+
+
+
     // Save form data to localStorage before payment
     $("#btn-momo-payment").click(function (e) {
         e.preventDefault();
@@ -956,10 +960,10 @@ $(document).ready(function () {
         recognition.lang = 'vi-VN'; // Cài đặt ngôn ngữ nhận diện
         recognition.continuous = true; // Tiếp tục nhận diện khi đang nói
         recognition.interimResults = true; // Hiển thị kết quả tạm thời khi nhận diện
-    
+
         // Biến để theo dõi trạng thái nhận diện
         var isRecognizing = false;
-    
+
         $('#voice-search').on('click', function() {
             if (isRecognizing) {
                 recognition.stop(); // Dừng nhận diện nếu đang nhận diện
@@ -969,13 +973,13 @@ $(document).ready(function () {
                 $(this).removeClass('fa-microphone').addClass('fa-microphone-slash'); // Đổi icon thành micro gạch
             }
         });
-    
+
         recognition.onstart = function() {
             console.log('Speech recognition started');
             isRecognizing = true; // Đánh dấu trạng thái nhận diện
             $('#voice-search').removeClass('fa-microphone').addClass('fa-microphone-slash'); // Đổi icon thành micro gạch
         };
-    
+
         recognition.onresult = function(event) {
             var transcript = event.results[0][0].transcript; // Lấy kết quả nhận diện
             if (event.results[0].isFinal) {
@@ -986,12 +990,12 @@ $(document).ready(function () {
                 $('input[name="keyword"]').val(transcript);
             }
         };
-    
+
         recognition.onerror = function(event) {
             console.log('Speech recognition error', event.error);
             toastr.error('Có lỗi xảy ra khi nhận diện giọng nói: ' + event.error);
         };
-    
+
         recognition.onend = function() {
             console.log('Speech recognition ended');
             $('#voice-search').removeClass('fa-microphone-slash').addClass('fa-microphone'); // Đổi icon về micro
@@ -1001,6 +1005,8 @@ $(document).ready(function () {
         console.log('Speech recognition not supported in this browser.');
         toastr.error('Trình duyệt của bạn không hỗ trợ nhận diện giọng nói.');
     }
-    
-    
+
+
+
+
 });

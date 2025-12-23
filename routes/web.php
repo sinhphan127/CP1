@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\DocumentController;
 use App\Http\Controllers\admin\LoginAdminController;
 use App\Http\Controllers\admin\ToursManagementController;
 use App\Http\Controllers\admin\UserManagementController;
+use App\Http\Controllers\clients\ChatbotController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\clients\HomeController;
 use App\Http\Controllers\clients\AboutController;
@@ -101,6 +102,9 @@ Route::post('/create-contact', [ContactController::class, 'createContact'])->nam
 Route::get('/search', [SearchController::class, 'index'])->name(name: 'search');
 Route::get('/search-voice-text', [SearchController::class, 'searchTours'])->name('search-voice-text');
 
+// Chatbot
+
+Route::post('/chatbot/reply', [ChatbotController::class, 'reply'])->name('chatbot.reply');
 
 //ADMIN
 // Routes without middleware
@@ -157,5 +161,6 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     //Contact management
     Route::get('/contact', [ContactManagementController::class, 'index'])->name('admin.contact');
     Route::post('/reply-contact', [ContactManagementController::class, 'replyContact'])->name('admin.reply-contact');
+
 
 });

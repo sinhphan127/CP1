@@ -278,6 +278,177 @@
         </div>
     </div>
 </section>
+
+
+<!-- CHAT POPUP -->
+<div id="chat-btn">💬</div>
+
+<div id="chat-box">
+    <div class="chat-header">
+        <span>Ecotour Support</span>
+        <span id="chat-close">✕</span>
+    </div>
+
+    <div class="chat-body">
+        <div class="msg admin">👋 Xin chào! Tôi có thể hỗ trợ gì?</div>
+    </div>
+
+    <div class="chat-footer">
+        <input type="text" id="chat-input" placeholder="Nhập tin nhắn...">
+        <button id="chat-send">Gửi</button>
+    </div>
+</div>
+
+<script>
+    const chatBtn   = document.getElementById('chat-btn');
+    const chatBox   = document.getElementById('chat-box');
+    const chatClose = document.getElementById('chat-close');
+    const chatSend  = document.getElementById('chat-send');
+    const chatInput = document.getElementById('chat-input');
+    const chatBody  = document.querySelector('.chat-body');
+
+    chatBtn.onclick = () => chatBox.style.display = 'flex';
+    chatClose.onclick = () => chatBox.style.display = 'none';
+
+    chatSend.onclick = sendMessage;
+    chatInput.addEventListener('keypress', e => {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    function sendMessage() {
+        let text = chatInput.value.trim();
+        if (!text) return;
+
+        chatBody.innerHTML += `<div class="msg user">${text}</div>`;
+        chatInput.value = '';
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        fetch("{{ route('chatbot.reply') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                message: text
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+        chatBody.innerHTML += `<div class="msg admin">${data.reply}</div>`;
+        chatBody.scrollTop = chatBody.scrollHeight;
+    })
+        .catch(() => {
+        chatBody.innerHTML += `<div class="msg admin">❌ Lỗi kết nối, vui lòng thử lại</div>`;
+    });
+    }
+</script>
+
+<style>
+    /* CHAT BUTTON */
+    #chat-btn {
+        position: fixed;
+        right: 25px;
+        bottom: 25px;
+        width: 56px;
+        height: 56px;
+        background: #28a745;
+        color: #fff;
+        font-size: 26px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(0,0,0,.3);
+    }
+
+    /* CHAT BOX */
+    #chat-box {
+        position: fixed;
+        right: 25px;
+        bottom: 95px;
+        width: 640px; /* rộng gấp 2 lần */
+        max-width: 95vw; /* tránh tràn màn hình nhỏ */
+        background: #fff;
+        border-radius: 12px;
+        display: none;
+        flex-direction: column;
+        z-index: 9999;
+        box-shadow: 0 10px 40px rgba(0,0,0,.25);
+        font-family: Arial, sans-serif;
+    }
+
+    /* HEADER */
+    .chat-header {
+        background: #28a745;
+        color: #fff;
+        padding: 12px;
+        border-radius: 12px 12px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+    }
+
+    #chat-close {
+        cursor: pointer;
+    }
+
+    /* BODY */
+    .chat-body {
+        padding: 10px;
+        height: 300px;
+        overflow-y: auto;
+        background: #f4f6f8;
+    }
+
+    /* MESSAGE */
+    .msg {
+        padding: 7px 10px;
+        border-radius: 6px;
+        margin-bottom: 6px;
+        max-width: 80%;
+        font-size: 14px;
+    }
+
+    .msg.admin {
+        background: #e1f5e9;
+    }
+
+    .msg.user {
+        background: #d1e7ff;
+        margin-left: auto;
+    }
+
+    /* FOOTER */
+    .chat-footer {
+        padding: 10px;
+        display: flex;
+        gap: 6px;
+        border-top: 1px solid #eee;
+    }
+
+    .chat-footer input {
+        flex: 1;
+        padding: 6px;
+        font-size: 14px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .chat-footer button {
+        background: #28a745;
+        color: #fff;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
 <!-- CTA Area end -->
 
 

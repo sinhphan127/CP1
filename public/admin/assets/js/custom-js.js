@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+
     function formatDate(dateStr) {
         const d = new Date(dateStr);
         return d.toLocaleDateString("vi-VN");

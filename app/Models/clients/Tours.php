@@ -12,6 +12,19 @@ class Tours extends Model
 
     protected $table = 'tbl_tours';
 
+
+
+    public function getToursStartedBeforeToday()
+    {
+        $today = now()->toDateString();
+
+        return DB::table($this->table)
+            ->where('availability', 1)
+            ->whereDate('startDate', '<', $today)
+            ->orderBy('startDate', 'DESC')
+            ->get();
+    }
+
     //Lấy tất cả tours
     public function getAllTours($perPage = 9)
     {
@@ -162,7 +175,7 @@ class Tours extends Model
         return DB::table('tbl_reviews')->insert($data);
     }
 
-    //Lấy danh sách nội dung reviews 
+    //Lấy danh sách nội dung reviews
     public function getReviews($id)
     {
         $getReviews = DB::table('tbl_reviews')
